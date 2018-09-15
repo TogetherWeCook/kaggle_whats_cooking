@@ -17,6 +17,7 @@ def relative_path(path):
 
 
 train_data = relative_path('../data/train.json')
+test_data = relative_path('../data/test.json')
 
 
 def main():
