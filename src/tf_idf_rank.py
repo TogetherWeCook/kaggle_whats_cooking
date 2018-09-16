@@ -36,15 +36,14 @@ def run_pipeline(submission=False):
                                                       test_size=0.25)
 
     tfidf = TfidfVectorizer(binary=True)
-    X_tr = tfidf.fit_transform(map(ingredient_format,
-                                   get_ingredients(train_content)))
-    X_te = tfidf.transform(map(ingredient_format,
-                               get_ingredients(test_content)))
+    X_tr = tfidf.fit_transform(map( \
+        ingredient_format, get_ingredients(train_content))).astype('float16')
+    X_te = tfidf.transform(map( \
+        ingredient_format, get_ingredients(test_content))).astype('float16')
     if not submission:
-        X_dev = tfidf.transform(map(ingredient_format,
-                                    get_ingredients(dev_content)))
+        X_dev = tfidf.transform(map( \
+            ingredient_format, get_ingredients(dev_content))).astype('float16')
 
-    ## Nearest neighbor
     le = preprocessing.LabelEncoder()
     y_tr = le.fit_transform(get_cuisine(train_content))
     if not submission:
@@ -52,11 +51,23 @@ def run_pipeline(submission=False):
 
     # clf = svm.SVC(C=1000, kernel='rbf', verbose=True)
     # clf = svm.SVC(C=1000, kernel='rbf', class_weight='balanced', verbose=True)
-    clf = svm.SVC(C=1000,
-                  kernel='rbf',
-                  # coef0=1,
-                  # class_weight=None,
-                  verbose=True)
+    clf = svm.SVC(C=1000, # penalty parameter
+                  kernel='rbf', # kernel type, rbf working fine here
+                  degree=3, # default value
+                  gamma=1, # kernel coefficient
+                  coef0=1, # change to 1 from default value of 0.0
+                  shrinking=True, # using shrinking heuristics
+                  tol=0.001, # stopping criterion tolerance
+                  probability=False, # no need to enable probability estimates
+                  cache_size=200, # 200 MB cache size
+                  # class_weight=None, # all classes are treated equally
+                  verbose=True, # print the logs
+                  max_iter=-1, # no limit, let it run
+                  decision_function_shape=None, # will use one vs rest explicitly
+                  random_state=None)
+
+    # from IPython import embed; embed(); import os; os._exit(1)
+
     clf = OneVsRestClassifier(clf)
     clf.fit(X_tr, y_tr)
 

@@ -29,4 +29,5 @@ On dev:
 * SVC C=100, balanced: 0.7543242156074015
 * SVC C=100, coef0=1, balanced: 0.7389380530973452
 * SVC C=100, coef0=1, class_weight=None: 0.7543242156074015
+* SVC gamma=1: 0.8110418342719228
 
