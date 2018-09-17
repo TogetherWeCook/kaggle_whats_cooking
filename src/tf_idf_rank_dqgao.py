@@ -88,6 +88,7 @@ def run_pipeline(submission=False):
                  }
     gs_clf = GridSearchCV(text_clf, parameters, cv=5, refit=True, n_jobs=1)
     gs_clf = gs_clf.fit(X_tr, y_tr)
+    print(gs_clf.best_params_)
 
     if not submission:
         y_dev_pred = gs_clf.predict(X_dev)
