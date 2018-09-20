@@ -85,7 +85,7 @@ def run_pipeline(submission=False):
 
 
 def main():
-    run_pipeline(submission=False)
+    run_pipeline(submission=True)
 
 
 if __name__ == '__main__':
